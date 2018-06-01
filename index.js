@@ -38,7 +38,7 @@ const THENIB_REACTION_NAME_PEETAPE = process.env.THENIB_REACTION_NAME_PEETAPE ||
 
 module.exports = (robot) => {
 
-  const is_slack = ( robot.adapter.adapterName === 'slack' ) ;
+  const is_slack = ( robot.adapterName === 'slack' ) ;
 
   let web ;
 
@@ -46,7 +46,7 @@ module.exports = (robot) => {
     web = new WebClient( robot.adapter.options.token ) ;
   }
   else {
-    robot.logger.info( 'disabling nibby; requires the slack adapter' ) ;
+    robot.logger.info( `disabling nibby; requires the slack adapter, adapter: ${robot.adapterName}` ) ;
     return {}
   }
 

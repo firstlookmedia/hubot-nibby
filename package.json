@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "description": "nibby the nib bot",
+  "devDependencies" : {
+    "dotenv": "^5.0.1"
+  },
   "dependencies": {
     "@slack/client": "^4.2.2",
     "cron": "^1.1.0",
