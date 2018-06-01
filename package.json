@@ -1,0 +1,12 @@
+{
+  "name": "hubot-nibby",
+  "version": "0.0.1",
+  "private": true,
+  "description": "nibby the nib bot",
+  "dependencies": {
+    "@slack/client": "^4.2.2",
+    "cron": "^1.1.0",
+    "request": "^2.74.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
