@@ -1,6 +1,6 @@
 
 // Description:
-//   thenib
+//   nibby
 //
 // Dependencies:
 //   "<module name>": "<module version>"
@@ -37,6 +37,8 @@ const THENIB_REACTION_NAME_NIBBY = process.env.THENIB_REACTION_NAME_NIBBY || 'ni
 const THENIB_REACTION_NAME_PEETAPE = process.env.THENIB_REACTION_NAME_PEETAPE || 'vhs' ;
 
 module.exports = (robot) => {
+
+  robot.logger.info( `robot: ${robot}` ) ;
 
   const is_slack = ( robot.adapterName === 'slack' ) ;
 
