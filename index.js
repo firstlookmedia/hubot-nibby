@@ -38,7 +38,7 @@ const THENIB_REACTION_NAME_PEETAPE = process.env.THENIB_REACTION_NAME_PEETAPE ||
 
 module.exports = (robot) => {
 
-  robot.logger.info( `robot: ${robot}` ) ;
+  robot.logger.info( `nibby: robot.adapterName: ${robot.adapterName}` ) ;
 
   const is_slack = ( robot.adapterName === 'slack' ) ;
 
