@@ -22,10 +22,6 @@ const CronJob = require('cron').CronJob ;
 
 const { WebClient } = require('@slack/client') ;
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').load();
-}
-
 const THENIB_ORIGIN      = process.env.THENIB_ORIGIN || 'https://thenib.com' ;
 const THENIB_GRAPHQL_URL = process.env.THENIB_GRAPHQL_URL ;
 const THENIB_REALM_ID    = process.env.THENIB_REALM_ID ;
@@ -38,7 +34,7 @@ const THENIB_REACTION_NAME_PEETAPE = process.env.THENIB_REACTION_NAME_PEETAPE ||
 
 module.exports = (robot) => {
 
-  robot.logger.info( `nibby: robot.adapterName: ${robot.adapterName}` ) ;
+  robot.logger.info( `[nibby] robot.adapterName: ${robot.adapterName}` ) ;
 
   const is_slack = ( robot.adapterName === 'slack' ) ;
 
@@ -48,15 +44,13 @@ module.exports = (robot) => {
     web = new WebClient( robot.adapter.options.token ) ;
   }
   else {
-    robot.logger.info( `disabling nibby; requires the slack adapter, adapter: ${robot.adapterName}` ) ;
+    robot.logger.info( `[nibby] disabling nibby; requires the slack adapter, adapter: ${robot.adapterName}` ) ;
     return {}
   }
 
   //
   robot.hear( /(^|\W)nibby(\W|$)/i, (res) => {
-    robot.logger.info( `heard nibby: channel: ${res.message.rawMessage.channel}, name: ${THENIB_REACTION_NAME_NIBBY};` ) ;
-
-console.log( res );
+    robot.logger.info( `[nibby] heard nibby: channel: ${res.message.rawMessage.channel}, name: ${THENIB_REACTION_NAME_NIBBY};` ) ;
 
     if ( is_slack )
     {
@@ -75,7 +69,7 @@ console.log( res );
 
   //
   robot.hear( /(^|\W)pee\s*tape(\W|$)/i, (res) => {
-    robot.logger.info( `heard peetape: channel: ${res.message.rawMessage.channel}, name: ${THENIB_REACTION_NAME_PEETAPE};` ) ;
+    robot.logger.info( `[nibby] heard peetape: channel: ${res.message.rawMessage.channel}, name: ${THENIB_REACTION_NAME_PEETAPE};` ) ;
 
     if ( is_slack )
     {
@@ -115,7 +109,7 @@ console.log( res );
         res.message.reaction === THENIB_REACTION_NAME_NIBBY
       )
       {
-        robot.logger.info( `matched reaction: channel: ${res.message.item.channel}, name: ${THENIB_REACTION_NAME_NIBBY}` ) ;
+        robot.logger.info( `[nibby] matched reaction: channel: ${res.message.item.channel}, name: ${THENIB_REACTION_NAME_NIBBY}` ) ;
 
         web.reactions.add({
           name: THENIB_REACTION_NAME_NIBBY,
@@ -146,7 +140,7 @@ console.log( res );
 
             let title = result.node.title.text
             let slug = result.node.speakingId
-            robot.logger.debug( `title: ${title}; slug: ${slug}` )
+            robot.logger.debug( `[nibby] title: ${title}; slug: ${slug}` )
 
             msg += `${title}: ${THENIB_ORIGIN}/${slug}\n`
           }
@@ -172,7 +166,7 @@ let featuredCronFactory = ( room_name ) => {
         .then( results => {
 
           if ( results.length <= 0 ) {
-            robot.logger.info( 'cron: no featured comics found' )
+            robot.logger.info( '[nibby] cron: no featured comics found' )
             return
           }
 
@@ -184,7 +178,7 @@ let featuredCronFactory = ( room_name ) => {
 
               let title = result.node.title.text
               let slug = result.node.speakingId
-              robot.logger.debug( `title: ${title}; slug: ${slug}` )
+              robot.logger.debug( `[nibby] title: ${title}; slug: ${slug}` )
 
               msg += `${title}: ${THENIB_ORIGIN}/${slug}\n`
             }
@@ -197,7 +191,7 @@ let featuredCronFactory = ( room_name ) => {
 
         })
         .catch( err => {
-          robot.logger.error( 'cron: error while fetching featured comics' )
+          robot.logger.error( '[nibby] cron: error while fetching featured comics' )
         })
     },
     start: false,
