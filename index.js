@@ -54,13 +54,15 @@ module.exports = (robot) => {
 
   //
   robot.hear( /(^|\W)nibby(\W|$)/i, (res) => {
-    robot.logger.info( `heard nibby: channel: ${res.message.rawMessage.channel.id}, name: ${THENIB_REACTION_NAME_NIBBY};` ) ;
+    robot.logger.info( `heard nibby: channel: ${res.message.rawMessage.channel}, name: ${THENIB_REACTION_NAME_NIBBY};` ) ;
+
+console.log( res );
 
     if ( is_slack )
     {
       web.reactions.add({
         name: THENIB_REACTION_NAME_NIBBY,
-        channel: res.message.rawMessage.channel.id,
+        channel: res.message.rawMessage.channel,
         timestamp: res.message.rawMessage.ts
       })
       .catch( err => robot.logger.error( err ) )
@@ -73,25 +75,28 @@ module.exports = (robot) => {
 
   //
   robot.hear( /(^|\W)pee\s*tape(\W|$)/i, (res) => {
-    robot.logger.info( `heard peetape: channel: ${res.message.rawMessage.channel.id}, name: ${THENIB_REACTION_NAME_PEETAPE};` ) ;
+    robot.logger.info( `heard peetape: channel: ${res.message.rawMessage.channel}, name: ${THENIB_REACTION_NAME_PEETAPE};` ) ;
 
     if ( is_slack )
     {
       web.reactions.add({
-        name: THENIB_REACTION_NAME_NIBBY,
-        channel: res.message.rawMessage.channel.id,
+        name: THENIB_REACTION_NAME_PEETAPE,
+        channel: res.message.rawMessage.channel,
         timestamp: res.message.rawMessage.ts
       })
       .then( () => {
 
         web.reactions.add({
-          name: THENIB_REACTION_NAME_PEETAPE,
-          channel: res.message.rawMessage.channel.id,
+          name: THENIB_REACTION_NAME_NIBBY,
+          channel: res.message.rawMessage.channel,
           timestamp: res.message.rawMessage.ts
         })
 
       })
-      .catch( err => robot.logger.error( err ) )
+      .catch( err => {
+        robot.logger.error( err )
+        robot.logger.error( res )
+      })
     }
     else
     {
@@ -103,7 +108,7 @@ module.exports = (robot) => {
   //
   if ( is_slack )
   {
-    robot.react( (res) => {
+    robot.hearReaction( (res) => {
       if (
         res.message.type === "added" &&
         res.message.item.type === "message" &&
